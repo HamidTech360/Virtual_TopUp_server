@@ -1,5 +1,6 @@
 import {CONFIG} from '../config/index'
 import { UserModel } from '../models/user.model'
+import {PaymentModel} from '../models/payment.model'
 const config = CONFIG()
 import joi from 'joi-browser'
 import axios from 'axios'
@@ -31,24 +32,34 @@ export const Pay = async (req:any, res:any, next:any)=>{
 export const VerifyPayment = async (req:any, res:any, next:any)=>{
 
     try{
+
+        const findRef = await PaymentModel.findOne({reference:req.body.ref})
+        if(findRef) return res.status(400).send('Transaction already verified')
+
         const response = await axios.get(`${config.PAYMENT_API}/transaction/verify/${req.body.ref}`, {
             headers:{
                 'Authorization':`Bearer ${config.PAYMENT_SECRET_KEY}`
             }
         })
-
+        if(!response.data.status) return res.status(400).send('could not verify')
         const user = await UserModel.findOne({email:req.user._doc.email})
         if(!user) return
+
+        const {reference, gateway_response, id, amount, currency} = response.data.data
+        const newPayment = new PaymentModel({
+            reference, gateway_response, amount, currency, trxId:id, email:req.user._doc.email
+        })
+        const savePayment = await newPayment.save()
 
         const amountPaid = response.data.data.amount/100
         user.set({
             walletBalance:user.walletBalance+amountPaid
         })
-
         const result = await user.save()
+      
+
         
         res.send(result)
-        
 
     }catch(ex){
         res.status(500).send('Failed to verify transaction')
