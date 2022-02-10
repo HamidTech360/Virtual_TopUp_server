@@ -10,7 +10,7 @@ export const Pay = async (req:any, res:any, next:any)=>{
     if(error) return res.status(401).send(error.details[0].message)
     
     req.body.amount = parseFloat(req.body.amount)*100 
-    req.body.amount+=3000
+    // req.body.amount+=3000
 
     try{
         const response = await axios.post(`${config.PAYMENT_API}/transaction/initialize`, req.body, {
@@ -51,7 +51,7 @@ export const VerifyPayment = async (req:any, res:any, next:any)=>{
         })
         const savePayment = await newPayment.save()
 
-        const amountPaid = response.data.data.amount/100
+        const amountPaid = response.data.data.amount/100 - 30
         user.set({
             walletBalance:user.walletBalance+amountPaid
         })
@@ -59,7 +59,11 @@ export const VerifyPayment = async (req:any, res:any, next:any)=>{
       
 
         
-        res.send(result)
+        res.json({
+            verified:true,
+            message:'Transaction verified successfully',
+            data:result
+        })
 
     }catch(ex){
         res.status(500).send('Failed to verify transaction')
