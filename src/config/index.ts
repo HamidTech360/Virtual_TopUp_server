@@ -10,7 +10,9 @@ export const CONFIG = () => {
         JWT_SECRET:process.env.JWT_SECRET,
         PORT:process.env.PORT,
         PAYMENT_SECRET_KEY:process.env.PAYMENT_SECRET_KEY,
-        PAYMENT_API:process.env.PAYMENT_API
+        PAYMENT_API:process.env.PAYMENT_API,
+        VTU_API_KEY:process.env.VTU_API_KEY,
+        VTU_URL:process.env.VTU_URL
     }
 
 }
