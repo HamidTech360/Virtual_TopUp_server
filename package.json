@@ -7,6 +7,9 @@
     "start": "ts-node src/index.ts",
     "build": "tsc"
   },
+  "engines": {
+    "node":"12.18.3"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
