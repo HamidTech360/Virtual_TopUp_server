@@ -36,6 +36,15 @@ const userSchema = new mongoose.Schema({
     referralBonus:{
         type:Number,
         required:true
+    },
+    status:{
+        type:String,
+        enum:['pending', 'verified'],
+        default:'pending'
+    },
+    confirmationCode:{
+        type:String,
+        unique:true
     }
 }, {timestamps:true})
 

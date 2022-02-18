@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import {CONFIG} from '../config/index'
 const config = CONFIG()
 import { ValidateUser,  UserModel } from "../models/user.model"
+import {sendMail} from './mail.controller'
 
 
 
@@ -15,7 +16,21 @@ export const createUser = async (req:any, res:any, next:any)=>{
     try{
         const findUser = await UserModel.findOne({email:req.body.email})
         if (findUser) return res.status(401).send('Email has been taken')
-    
+        
+        
+        const token = jwt.sign({email:req.body.email}, `${config.JWT_SECRET}`)
+        const email_body = `
+            <div>
+                <h1 style="color:royalblue">Verify your email</h1>
+                <div style="font-size:15px;">
+                    <a href="http://localhost:3000/${token}">Click here</a> to verify your email your email 
+                </div>
+            </div>
+        `
+       const mail = sendMail(req.body.email,'EASYTOPUP EMAIL VERIFICATION',email_body)
+       if(!mail) return res.status(500).send(mail);
+
+       console.log('Email sent successfully');
         const newUser = new UserModel ({
             firstName:req.body.firstName,
             lastName:req.body.lastName,
@@ -23,7 +38,8 @@ export const createUser = async (req:any, res:any, next:any)=>{
             password:req.body.password,
             phoneNo:req.body.phoneNo,
             walletBalance:0,
-            referralBonus:0
+            referralBonus:0,
+            confirmationCode:token
         })
         
         const salt = await bcrypt.genSalt(10)
@@ -36,6 +52,10 @@ export const createUser = async (req:any, res:any, next:any)=>{
             message:'User created successfully',
             data:{}
         })
+        
+
+       
+       
     }catch(ex){
         res.status(500).send(ex)
     }

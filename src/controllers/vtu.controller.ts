@@ -77,7 +77,7 @@ export const BuyAirTime = async (req:any, res:any, next:any)=>{
             data:result,
             details:response.data
         })
-       // console.log(response.data);
+        console.log(response.data);
         
 
         
@@ -112,7 +112,7 @@ export const BuyData = async (req:any, res:any, next:any)=>{
 
         if(response.data.Status !== "successful") return res.status(400).send("something went wrong")
         user.set({
-            walletBalance: user.walletBalance - req.body.amount
+            walletBalance: user.walletBalance - (req.body.amount + (0.05*req.body.amount))
         })
         const result = await user.save()
 
