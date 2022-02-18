@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prestart": "tsc",
-    "start": "node src/index.ts",
+    "prestart": "tsc src/index.js",
+    "start": "node src/index.js",
     "dev": "ts-node src/index.ts"
   },
   "engines": {
