@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prestart": "tsc src/index.js",
+    "prestart": "tsc src/index.ts",
     "start": "node src/index.js",
     "dev": "ts-node src/index.ts"
   },
