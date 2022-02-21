@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import {CONFIG} from '../config/index'
 const config = CONFIG()
 import { ValidateUser,  UserModel } from "../models/user.model"
-import {sendMail} from './mail.controller'
+// import {sendMail} from './mail.controller'
 
 
 
@@ -19,16 +19,7 @@ export const createUser = async (req:any, res:any, next:any)=>{
         
         
         const token = jwt.sign({email:req.body.email}, `${config.JWT_SECRET}`)
-        const email_body = `
-            <div>
-                <h1 style="color:royalblue">Verify your email</h1>
-                <div style="font-size:15px;">
-                    <a href="http://localhost:3000/${token}">Click here</a> to verify your email your email 
-                </div>
-            </div>
-        `
-       const mail = sendMail(req.body.email,'EASYTOPUP EMAIL VERIFICATION',email_body)
-       if(!mail) return res.status(500).send(mail);
+       
 
        console.log('Email sent successfully');
         const newUser = new UserModel ({

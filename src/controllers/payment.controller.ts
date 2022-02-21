@@ -70,6 +70,19 @@ export const VerifyPayment = async (req:any, res:any, next:any)=>{
     }
 }
 
+export const getPayments = async (req:any, res:any, next:any)=>{
+    try{
+        const allPayments = await PaymentModel.find()
+        res.json({
+            status:'success',
+            message:'Payment history retrieved successfully',
+            data:allPayments
+        })
+    }catch(ex){
+        res.status(500).send("Failed to load transaction history")
+    }
+}
+
 
 function Validate (payload:any){
     const schema = {
