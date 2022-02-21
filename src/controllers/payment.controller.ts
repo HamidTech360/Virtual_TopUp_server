@@ -24,6 +24,8 @@ export const Pay = async (req:any, res:any, next:any)=>{
 
     }catch(ex){
         res.status(400).send('Error processing payment. Please try again')
+        console.log(ex);
+        
     }
 
 }
