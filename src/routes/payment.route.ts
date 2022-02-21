@@ -5,6 +5,6 @@ import auth from '../middlewares/auth'
 
 router.post('/',auth, Pay)
 router.post('/verify',auth, VerifyPayment)
-router.get('/', getPayments)
+router.get('/',auth, getPayments)
 //trxref=33x97h1ut7&reference=33x97h1ut7
 export default router

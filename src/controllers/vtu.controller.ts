@@ -4,6 +4,7 @@ import joi from 'joi-browser'
 import axios from 'axios'
 import {VtuModel} from '../models/vtu.model'
 import { UserModel } from '../models/user.model'
+import {PaymentModel} from '../models/payment.model'
 
 
 
@@ -94,15 +95,19 @@ export const BuyData = async (req:any, res:any, next:any)=>{
 
     const user = await UserModel.findOne({email:req.user._doc.email})
     if(!user) return res.status(400).send('you are not an authorized user')
+    
+    const splitPlan = req.body.plan.split('-')
+    const planAmount = parseInt(splitPlan[1])
 
+    if(user.walletBalance < planAmount) return res.status(400).send('Insufficient Balance')
     try{
         const payload= {
             network:req.body.network,
             mobile_number:req.body.mobile_number,
-            plan: req.body.plan,
+            plan: splitPlan[0],
             Ported_number:false,
         }
-        //console.log(payload);
+        console.log(payload, planAmount);
         
         const response = await axios.post(`${config.VTU_URL}/data/`, {...payload}, {headers:{
             'Authorization':`Token ${config.VTU_API_KEY}`,
@@ -112,7 +117,7 @@ export const BuyData = async (req:any, res:any, next:any)=>{
 
         if(response.data.Status !== "successful") return res.status(400).send("something went wrong")
         user.set({
-            walletBalance: user.walletBalance - (req.body.amount + (0.05*req.body.amount))
+            walletBalance: user.walletBalance - (planAmount + (0.05*planAmount))
         })
         const result = await user.save()
 
@@ -138,6 +143,50 @@ export const BuyData = async (req:any, res:any, next:any)=>{
     }
 } 
 
+export const GetTransactions = async (req:any, res:any, next:any)=>{
+    try{
+        const response = await VtuModel.find({email:req.user._doc.email})
+        res.json({
+            status:'success',
+            message:'Payment history retrieved successfully',
+            data:response
+        })
+    }catch(ex){
+        res.status(500).send("Failed to load transaction history")
+    }
+}
+
+export const Statistics = async (req:any, res:any, next:any)=>{
+    let walletTotal = 0
+    let vtuTotal = 0
+    try{
+
+        const vtu = await VtuModel.find({email:req.user._doc.email})
+        let vtuArr = vtu.map((item, i)=>item.amount)
+        // for(let i=0; i<=vtuArr.length-1; i++){
+
+        // }
+
+        const payment = await PaymentModel.find({email:req.user._doc.email})
+        let paymentSum = payment.map(item=>item.amount)
+
+        const Checkbalance = await UserModel.findOne({email:req.user._doc.email})
+        const walletBalance = Checkbalance.walletBalance
+
+        res.json({
+            status:'success',
+            message:'data retrieved successfully',
+            data:{
+                vtuArr, paymentSum, walletBalance
+            }
+        })
+   
+        
+
+    }catch(ex){
+        res.status(500).send("Failed to load statistics")
+    }
+}
 
 
 

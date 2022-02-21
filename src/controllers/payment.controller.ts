@@ -53,7 +53,7 @@ export const VerifyPayment = async (req:any, res:any, next:any)=>{
         })
         const savePayment = await newPayment.save()
 
-        const amountPaid = response.data.data.amount/100 - 30
+        const amountPaid = response.data.data.amount/100 - 50
         user.set({
             walletBalance:user.walletBalance+amountPaid
         })
@@ -74,11 +74,11 @@ export const VerifyPayment = async (req:any, res:any, next:any)=>{
 
 export const getPayments = async (req:any, res:any, next:any)=>{
     try{
-        const allPayments = await PaymentModel.find()
+        const payments = await PaymentModel.find({email:req.user._doc.email})
         res.json({
             status:'success',
             message:'Payment history retrieved successfully',
-            data:allPayments
+            data:payments
         })
     }catch(ex){
         res.status(500).send("Failed to load transaction history")
