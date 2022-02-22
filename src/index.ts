@@ -7,6 +7,7 @@ const config = CONFIG()
 import user from './routes/user.route'
 import Payment from './routes/payment.route'
 import VTU from './routes/vtu.route'
+import Review from './routes/review.route'
 
 
 
@@ -26,5 +27,6 @@ app.use(express.json())
 app.use('/api/user', user)
 app.use('/api/pay', Payment)
 app.use('/api/vtu', VTU )
+app.use('/api/review', Review )
 
 app.listen(config.PORT, ()=>console.log(`Listening to port ${config.PORT}`))

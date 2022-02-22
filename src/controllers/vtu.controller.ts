@@ -157,27 +157,28 @@ export const GetTransactions = async (req:any, res:any, next:any)=>{
 }
 
 export const Statistics = async (req:any, res:any, next:any)=>{
-    let walletTotal = 0
-    let vtuTotal = 0
+    // let walletTotal = 0
+    // let vtuTotal = 0
     try{
 
         const vtu = await VtuModel.find({email:req.user._doc.email})
         let vtuArr = vtu.map((item, i)=>item.amount)
-        // for(let i=0; i<=vtuArr.length-1; i++){
-
-        // }
+        const totalVtu = vtuArr.reduce((Psum, a)=>Psum + a, 0)
+        
 
         const payment = await PaymentModel.find({email:req.user._doc.email})
-        let paymentSum = payment.map(item=>item.amount)
+        let paymentArr = payment.map(item=>item.amount-5000)
+        const totalPayment = paymentArr.reduce((Psum, a)=>Psum + a, 0)
 
         const Checkbalance = await UserModel.findOne({email:req.user._doc.email})
         const walletBalance = Checkbalance.walletBalance
+        
 
         res.json({
             status:'success',
             message:'data retrieved successfully',
             data:{
-                vtuArr, paymentSum, walletBalance
+                totalVtu, totalPayment, walletBalance
             }
         })
    
