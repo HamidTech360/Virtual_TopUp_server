@@ -43,6 +43,7 @@ export const BuyAirTime = async (req:any, res:any, next:any)=>{
     
 
     if(user.walletBalance < req.body.amount) return res.status(400).send('Insufficient Balance')
+    if(req.body.amount < 50) return res.status(400).send('The least you can purchase is NGN 30')
     try{
         const payload= {
             network:req.body.network,
@@ -156,6 +157,21 @@ export const GetTransactions = async (req:any, res:any, next:any)=>{
     }
 }
 
+export const GetAllTransactions = async (req:any, res:any, next:any)=>{
+    try{
+        const response = await VtuModel.find()
+        
+        res.json({
+            status:'success',
+            message:'Payment history retrieved successfully',
+            data:response
+        })
+
+    }catch(ex){
+        res.status(500).send("Failed to load transaction history") 
+    }
+}
+
 export const Statistics = async (req:any, res:any, next:any)=>{
     // let walletTotal = 0
     // let vtuTotal = 0
@@ -167,7 +183,7 @@ export const Statistics = async (req:any, res:any, next:any)=>{
         
 
         const payment = await PaymentModel.find({email:req.user._doc.email})
-        let paymentArr = payment.map(item=>item.amount-5000)
+        let paymentArr = payment.map(item=>(item.amount-5000)/100)
         const totalPayment = paymentArr.reduce((Psum, a)=>Psum + a, 0)
 
         const Checkbalance = await UserModel.findOne({email:req.user._doc.email})

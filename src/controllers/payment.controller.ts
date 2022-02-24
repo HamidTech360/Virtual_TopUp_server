@@ -5,13 +5,30 @@ const config = CONFIG()
 import joi from 'joi-browser'
 import axios from 'axios'
 
+function transactionCharge (amount:any){
+    if(amount <= 1000){
+        return 5000
+    }else if(amount > 1000 && amount<=5000){
+        return 10000
+    }else if(amount > 5000 && amount <=15000){
+        return 15000
+    }else{
+       return 20000
+    }
+}
+
 export const Pay = async (req:any, res:any, next:any)=>{
     const {error} = Validate(req.body)
     if(error) return res.status(401).send(error.details[0].message)
     
     req.body.amount = parseFloat(req.body.amount)*100 
-    // req.body.amount+=3000
+    console.log(req.body.amount);
+    
 
+    req.body.amount +=transactionCharge(req.body.amount/100)
+  
+    console.log(req.body);
+    
     try{
         const response = await axios.post(`${config.PAYMENT_API}/transaction/initialize`, req.body, {
             headers:{
@@ -53,7 +70,9 @@ export const VerifyPayment = async (req:any, res:any, next:any)=>{
         })
         const savePayment = await newPayment.save()
 
-        const amountPaid = response.data.data.amount/100 - 50
+        const amountPaid = response.data.data.amount/100 - transactionCharge(response.data.data.amount/100)/100
+        console.log(amountPaid);
+        
         user.set({
             walletBalance:user.walletBalance+amountPaid
         })
@@ -73,15 +92,37 @@ export const VerifyPayment = async (req:any, res:any, next:any)=>{
 }
 
 export const getPayments = async (req:any, res:any, next:any)=>{
+   
+    
     try{
         const payments = await PaymentModel.find({email:req.user._doc.email})
+     
+        payments.map(item=>item.amount = (item.amount/100))
+        //console.log(payments);
+        
         res.json({
             status:'success',
             message:'Payment history retrieved successfully',
             data:payments
         })
     }catch(ex){
-        res.status(500).send("Failed to load transaction history")
+        res.status(500).send("Failed to load payment history")
+    }
+}
+
+export const getAllPayments = async (req:any, res:any, next:any)=>{
+    try{
+        const allPayments = await PaymentModel.find()
+        allPayments.map(item=>item.amount = item.amount/100)
+
+        res.json({
+            status:'success',
+            message:'Payment history retrieved successfully',
+            data:allPayments
+        })
+
+    }catch(ex){
+        res.status(500).send("Failed to load payment history")
     }
 }
 
