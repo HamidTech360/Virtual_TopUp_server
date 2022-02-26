@@ -100,7 +100,7 @@ export const BuyData = async (req:any, res:any, next:any)=>{
     const splitPlan = req.body.plan.split('-')
     const planAmount = parseInt(splitPlan[1])
 
-    if(user.walletBalance < planAmount) return res.status(400).send('Insufficient Balance')
+    if(user.walletBalance < (planAmount + (0.05*planAmount))) return res.status(400).send('Insufficient Balance')
     try{
         const payload= {
             network:req.body.network,

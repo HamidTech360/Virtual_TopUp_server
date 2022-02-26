@@ -132,6 +132,8 @@ export const deleteUser = async (req:any, res:any, next:any)=>{
 }
 
 export const ResetUser = async (req:any, res:any, next:any)=>{
+    const {error} = Validate(req.body)
+    if(error) return res.status(400).send(error.details[0].message)
     try{
         const {password} = req.body
         const hashedPassword = await bcrypt.hash(password, 10)
