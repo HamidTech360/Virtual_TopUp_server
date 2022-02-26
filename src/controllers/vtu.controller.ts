@@ -43,7 +43,7 @@ export const BuyAirTime = async (req:any, res:any, next:any)=>{
     
 
     if(user.walletBalance < req.body.amount) return res.status(400).send('Insufficient Balance')
-    if(req.body.amount < 50) return res.status(400).send('The least you can purchase is NGN 30')
+    if(req.body.amount < 50) return res.status(400).send('The least you can purchase is NGN 50')
     try{
         const payload= {
             network:req.body.network,
