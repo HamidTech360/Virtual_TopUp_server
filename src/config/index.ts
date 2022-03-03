@@ -13,6 +13,7 @@ export const CONFIG = () => {
         PAYMENT_API:process.env.PAYMENT_API,
         VTU_API_KEY:process.env.VTU_API_KEY,
         VTU_URL:process.env.VTU_URL,
+        SEND_GRID_EMAIL_KEY:process.env.SEND_GRID_EMAIL_KEY,
         EMAIL:process.env.EMAIL,
         PASSWORD:process.env.PASSWORD,
         REFRESH_TOKEN:process.env.REFRESH_TOKEN,

@@ -84,7 +84,7 @@ export const BuyAirTime = async (req:any, res:any, next:any)=>{
 
         
     }catch(ex:any){
-        res.status(500).send('Something went wrong in the server. Please refer to the Admin')
+        res.status(500).send('Cannot process transaction now. Please refer to the Admin')
         console.log(ex.response?.data);
         
     }
@@ -123,7 +123,7 @@ export const BuyData = async (req:any, res:any, next:any)=>{
         const result = await user.save()
 
         const newTransaction = new VtuModel({
-            amount:response.data.amount,
+            amount:planAmount + (0.05*planAmount),
             type:'Data',
             email:user.email
         })
@@ -138,7 +138,7 @@ export const BuyData = async (req:any, res:any, next:any)=>{
 
 
     }catch(ex:any){
-        res.status(500).send('Something went wrong in the server. Please refer to the Admin')
+        res.status(500).send('Cannot process transaction now. Please refer to the Admin')
         console.log(ex.response?.data);
         
     }

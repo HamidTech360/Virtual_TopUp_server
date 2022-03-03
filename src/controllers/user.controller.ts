@@ -5,7 +5,7 @@ import {CONFIG} from '../config/index'
 const config = CONFIG()
 import { ValidateUser,  UserModel } from "../models/user.model"
 import { PaymentModel } from '../models/payment.model'
-// import {sendMail} from './mail.controller'
+import {sendMail} from './mail.controller'
 
 
 
@@ -44,8 +44,13 @@ export const createUser = async (req:any, res:any, next:any)=>{
             message:'User created successfully',
             data:{}
         })
-        
-
+        const email_body= `
+            <div>
+                <div>Welcome to EasyTopUp. We hope to serve you with the best experience</div>
+                <div> click <a href="https://easytopup.netlify.app/verify_account/${newUser.confirmationCode}">HERE</a> to verify your account</div>
+            </div>
+        `
+        sendMail(req.body.email, 'EasyTopUp Accout verification', email_body)
        
        
     }catch(ex){
@@ -53,6 +58,23 @@ export const createUser = async (req:any, res:any, next:any)=>{
     }
 
     
+}
+
+export const verifyAccount = async (req:any, res:any, next:any)=>{
+    const {ref} = req.body
+    try{
+        const checkCode = await UserModel.findOne({confirmationCode:ref})
+        if(!checkCode) return res.status(400).send('Failed to verify account')
+
+        checkCode.confirmationCode = "verified"
+        checkCode.save()
+        res.json({
+            status:'success',
+            message:'Account successfully verified'
+        })
+    }catch(ex){
+        res.status(500).send('Server Error. Cannot verify account')
+    }
 }
 
 export const AuthUser = async (req:any, res:any, next:any)=>{
@@ -80,7 +102,7 @@ export const AuthUser = async (req:any, res:any, next:any)=>{
         })
       
     }catch(ex){
-
+        res.status(500).send('Server Error')
     }
 }
 
@@ -127,7 +149,7 @@ export const deleteUser = async (req:any, res:any, next:any)=>{
             })
         }
     }catch(ex){
-        res.status(500).send('Failed to delete User')
+        res.status(500).send('Failed to delete User. Server Error')
     }
 }
 

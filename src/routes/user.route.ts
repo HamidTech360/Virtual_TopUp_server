@@ -6,7 +6,8 @@ import {createUser,
         getUser, 
         getAllUsers,
         deleteUser,
-        ResetUser
+        ResetUser,
+        verifyAccount
 } from '../controllers/user.controller'
 
 
@@ -15,8 +16,8 @@ router.delete('/',auth, deleteUser)
 router.get('/all',auth, getAllUsers)
 router.get('/',auth, getUser)
 router.post('/auth', AuthUser)
-router.post('/verify')
-router.put('/', ResetUser )
+router.post('/verify_account', verifyAccount )
+router.put('/', ResetUser)
 
 
 export default router;
