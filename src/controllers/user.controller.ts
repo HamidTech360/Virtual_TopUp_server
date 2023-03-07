@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import joi from 'joi-browser'
 import jwt from 'jsonwebtoken'
 import {CONFIG} from '../config/index'

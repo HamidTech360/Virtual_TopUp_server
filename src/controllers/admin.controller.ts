@@ -1,5 +1,5 @@
 import { ValidateAdmin, AdminModel } from "../models/admin.model";
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import joi from 'joi-browser'
 import { CONFIG } from "../config";
