@@ -29,7 +29,7 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         const findUser = yield user_model_1.UserModel.findOne({ email: req.body.email });
         if (findUser)
             return res.status(401).send('Email has been taken');
-        const token = jsonwebtoken_1.default.sign({ email: req.body.email }, `${config.JWT_SECRET}`);
+        const token = jsonwebtoken_1.default.sign({ email: req.body.email }, `${process.env.JWT_SECRET}`);
         console.log('Email sent successfully');
         const newUser = new user_model_1.UserModel({
             firstName: req.body.firstName,
@@ -53,7 +53,7 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         const email_body = `
             <div>
                 <div>Welcome to EasyTopUp. We hope to serve you with the best experience</div>
-                <div> click <a href="https://easytopup.netlify.app/verify_account/${newUser.confirmationCode}">HERE</a> to verify your account</div>
+                <div> click <a href="${process.env.CLIENT_URL}/verify_account/${newUser.confirmationCode}">HERE</a> to verify your account</div>
             </div>
         `;
         (0, mail_controller_1.sendMail)(req.body.email, 'EasyTopUp Accout verification', email_body);
@@ -92,7 +92,7 @@ const AuthUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         const checkPwd = yield bcryptjs_1.default.compare(req.body.password, checkUser.password);
         if (!checkPwd)
             return res.status(401).send('Invalid password');
-        const token = jsonwebtoken_1.default.sign(Object.assign({}, checkUser), `${config.JWT_SECRET}`);
+        const token = jsonwebtoken_1.default.sign(Object.assign({}, checkUser), `${process.env.JWT_SECRET}`);
         res.json({
             status: 'success',
             message: 'Login successful',

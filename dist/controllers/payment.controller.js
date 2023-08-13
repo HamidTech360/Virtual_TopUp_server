@@ -42,9 +42,9 @@ const Pay = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     req.body.amount += transactionCharge(req.body.amount / 100);
     console.log(req.body);
     try {
-        const response = yield axios_1.default.post(`${config.PAYMENT_API}/transaction/initialize`, req.body, {
+        const response = yield axios_1.default.post(`${process.env.PAYMENT_API}/transaction/initialize`, req.body, {
             headers: {
-                'Authorization': `Bearer ${config.PAYMENT_SECRET_KEY}`
+                'Authorization': `Bearer ${process.env.PAYMENT_SECRET_KEY}`
             }
         });
         res.send(response.data);
@@ -60,9 +60,9 @@ const VerifyPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         const findRef = yield payment_model_1.PaymentModel.findOne({ reference: req.body.ref });
         if (findRef)
             return res.status(400).send('Transaction already verified');
-        const response = yield axios_1.default.get(`${config.PAYMENT_API}/transaction/verify/${req.body.ref}`, {
+        const response = yield axios_1.default.get(`${process.env.PAYMENT_API}/transaction/verify/${req.body.ref}`, {
             headers: {
-                'Authorization': `Bearer ${config.PAYMENT_SECRET_KEY}`
+                'Authorization': `Bearer ${process.env.PAYMENT_SECRET_KEY}`
             }
         });
         if (!response.data.status)

@@ -19,7 +19,7 @@ const config = (0, config_1.CONFIG)();
 const sendMail = (receiver_email, subject, email_body) => __awaiter(void 0, void 0, void 0, function* () {
     //console.log('in the mail functiion');
     try {
-        mail_1.default.setApiKey(`${config.SEND_GRID_EMAIL_KEY}`);
+        mail_1.default.setApiKey(`${process.env.SEND_GRID_EMAIL_KEY}`);
         const message = {
             to: receiver_email,
             from: {

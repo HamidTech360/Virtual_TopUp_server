@@ -11,7 +11,7 @@ function auth(req, res, next) {
     if (!token)
         return res.status(403).send('Access denied');
     try {
-        const decoded = jsonwebtoken_1.default.verify(token, `${config.JWT_SECRET}`);
+        const decoded = jsonwebtoken_1.default.verify(token, `${process.env.JWT_SECRET}`);
         req.user = decoded;
         next();
     }

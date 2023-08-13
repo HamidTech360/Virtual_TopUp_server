@@ -22,8 +22,8 @@ const user_model_1 = require("../models/user.model");
 const payment_model_1 = require("../models/payment.model");
 const FetchNetworkID = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield axios_1.default.get(`${config.VTU_URL}/get/network/`, { headers: {
-                'Authorization': `Token ${config.VTU_API_KEY}`
+        const response = yield axios_1.default.get(`${process.env.VTU_URL}/get/network/`, { headers: {
+                'Authorization': `Token ${process.env.VTU_API_KEY}`
             } });
         res.send(response.data);
     }
@@ -34,8 +34,8 @@ const FetchNetworkID = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
 exports.FetchNetworkID = FetchNetworkID;
 const GetDataPlans = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield axios_1.default.get(`${config.VTU_URL}/network`, { headers: {
-                'Authorization': `Token ${config.VTU_API_KEY}`
+        const response = yield axios_1.default.get(`${process.env.VTU_URL}/network`, { headers: {
+                'Authorization': `Token ${process.env.VTU_API_KEY}`
             } });
         res.send(response.data);
     }
@@ -67,8 +67,8 @@ const BuyAirTime = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
             Ported_number: false,
         };
         console.log(payload);
-        const response = yield axios_1.default.post(`${config.VTU_URL}/topup/`, Object.assign({}, payload), { headers: {
-                'Authorization': `Token ${config.VTU_API_KEY}`,
+        const response = yield axios_1.default.post(`${process.env.VTU_URL}/topup/`, Object.assign({}, payload), { headers: {
+                'Authorization': `Token ${process.env.VTU_API_KEY}`,
             } });
         console.log(response.data);
         if (response.data.Status !== "successful")
@@ -117,8 +117,8 @@ const BuyData = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
             Ported_number: false,
         };
         console.log(payload, planAmount);
-        const response = yield axios_1.default.post(`${config.VTU_URL}/data/`, Object.assign({}, payload), { headers: {
-                'Authorization': `Token ${config.VTU_API_KEY}`,
+        const response = yield axios_1.default.post(`${process.env.VTU_URL}/data/`, Object.assign({}, payload), { headers: {
+                'Authorization': `Token ${process.env.VTU_API_KEY}`,
             } });
         console.log(response.data);
         if (response.data.Status !== "successful")

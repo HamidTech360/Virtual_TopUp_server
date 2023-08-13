@@ -59,7 +59,7 @@ const AuthAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         const checkPwd = yield bcryptjs_1.default.compare(req.body.password, checkAdmin.password);
         if (!checkPwd)
             return res.status(401).send('Invalid password');
-        const token = jsonwebtoken_1.default.sign(Object.assign({}, checkAdmin), `${config.JWT_SECRET}`);
+        const token = jsonwebtoken_1.default.sign(Object.assign({}, checkAdmin), `${process.env.JWT_SECRET}`);
         res.json({
             status: 'success',
             message: 'Login successful',
