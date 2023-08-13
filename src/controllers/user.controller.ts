@@ -19,7 +19,7 @@ export const createUser = async (req:any, res:any, next:any)=>{
         if (findUser) return res.status(401).send('Email has been taken')
         
         
-        const token = jwt.sign({email:req.body.email}, `${config.JWT_SECRET}`)
+        const token = jwt.sign({email:req.body.email}, `${process.env.JWT_SECRET}`)
        
 
        console.log('Email sent successfully');
@@ -47,7 +47,7 @@ export const createUser = async (req:any, res:any, next:any)=>{
         const email_body= `
             <div>
                 <div>Welcome to EasyTopUp. We hope to serve you with the best experience</div>
-                <div> click <a href="https://easytopup.netlify.app/verify_account/${newUser.confirmationCode}">HERE</a> to verify your account</div>
+                <div> click <a href="${process.env.CLIENT_URL}/verify_account/${newUser.confirmationCode}">HERE</a> to verify your account</div>
             </div>
         `
         sendMail(req.body.email, 'EasyTopUp Accout verification', email_body)
@@ -91,7 +91,7 @@ export const AuthUser = async (req:any, res:any, next:any)=>{
         
         
         
-        const token= jwt.sign({...checkUser}, `${config.JWT_SECRET}`)
+        const token= jwt.sign({...checkUser}, `${process.env.JWT_SECRET}`)
      
         
         res.json({

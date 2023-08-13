@@ -11,8 +11,8 @@ import {PaymentModel} from '../models/payment.model'
 
 export const FetchNetworkID = async(req:any, res:any, next:any)=>{
     try{
-        const response = await axios.get(`${config.VTU_URL}/get/network/`, {headers:{
-            'Authorization':`Token ${config.VTU_API_KEY}`
+        const response = await axios.get(`${process.env.VTU_URL}/get/network/`, {headers:{
+            'Authorization':`Token ${process.env.VTU_API_KEY}`
         }})
         res.send(response.data)
     }catch(ex){
@@ -22,8 +22,8 @@ export const FetchNetworkID = async(req:any, res:any, next:any)=>{
 
 export const GetDataPlans = async (req:any, res:any, next:any)=>{
     try{
-        const response = await axios.get(`${config.VTU_URL}/network`, {headers:{
-            'Authorization':`Token ${config.VTU_API_KEY}`
+        const response = await axios.get(`${process.env.VTU_URL}/network`, {headers:{
+            'Authorization':`Token ${process.env.VTU_API_KEY}`
         }})
         res.send(response.data)
     }catch(ex){
@@ -54,8 +54,8 @@ export const BuyAirTime = async (req:any, res:any, next:any)=>{
         }
         console.log(payload);
         
-        const response = await axios.post(`${config.VTU_URL}/topup/`, {...payload}, {headers:{
-            'Authorization':`Token ${config.VTU_API_KEY}`,
+        const response = await axios.post(`${process.env.VTU_URL}/topup/`, {...payload}, {headers:{
+            'Authorization':`Token ${process.env.VTU_API_KEY}`,
          
         }})
         console.log(response.data);
@@ -110,8 +110,8 @@ export const BuyData = async (req:any, res:any, next:any)=>{
         }
         console.log(payload, planAmount);
         
-        const response = await axios.post(`${config.VTU_URL}/data/`, {...payload}, {headers:{
-            'Authorization':`Token ${config.VTU_API_KEY}`,
+        const response = await axios.post(`${process.env.VTU_URL}/data/`, {...payload}, {headers:{
+            'Authorization':`Token ${process.env.VTU_API_KEY}`,
          
         }})
         console.log(response.data);

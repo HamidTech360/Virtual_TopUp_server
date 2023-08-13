@@ -5,7 +5,7 @@ export const VerifyAccount = async (req:any, res:any, next:any)=>{
         const user = await UserModel.findOne({confirmationCode:req.body.confirmationCode})
         if(!user) return res.status(400).send('User not found')
         user.set({
-            staus:'verified'
+            status:'verified'
         })
         const result = await user.save()
         res.json({

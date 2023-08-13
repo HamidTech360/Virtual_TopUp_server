@@ -2,15 +2,15 @@
   "name": "skupal",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "compile": "tsc",
     "prestart": "npm run compile",
-    "start": "node src/index.js",
-    "dev": "ts-node src/index.ts"
+    "start": "node ./dist/index.js",
+    "dev": "nodemon src/index.ts"
   },
   "engines": {
-    "node": "12.18.3"
+    "node": "16.15.1"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +23,6 @@
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/lodash": "^4.14.178",
-    "@types/node": "^17.0.12",
     "@types/nodemailer": "^6.4.4",
     "axios": "^0.25.0",
     "bcrypt": "^5.0.1",
@@ -36,9 +35,10 @@
     "joi-browser": "^13.4.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
-    "mongoose": "^6.1.8",
+    "mongoose": "^6.3.6",
     "nodemailer": "^6.7.2",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.5"
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
   }
 }

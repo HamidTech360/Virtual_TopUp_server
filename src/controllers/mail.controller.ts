@@ -7,7 +7,7 @@ export const sendMail =async  (receiver_email:any, subject:any, email_body:any)=
     //console.log('in the mail functiion');
     
     try{
-        sgMail.setApiKey(`${config.SEND_GRID_EMAIL_KEY}`)
+        sgMail.setApiKey(`${process.env.SEND_GRID_EMAIL_KEY}`)
         const message = {
            to: receiver_email, 
            from:{

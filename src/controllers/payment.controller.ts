@@ -30,9 +30,9 @@ export const Pay = async (req:any, res:any, next:any)=>{
     console.log(req.body);
     
     try{
-        const response = await axios.post(`${config.PAYMENT_API}/transaction/initialize`, req.body, {
+        const response = await axios.post(`${process.env.PAYMENT_API}/transaction/initialize`, req.body, {
             headers:{
-                'Authorization':`Bearer ${config.PAYMENT_SECRET_KEY}`
+                'Authorization':`Bearer ${process.env.PAYMENT_SECRET_KEY}`
             }
         })
 
@@ -55,9 +55,9 @@ export const VerifyPayment = async (req:any, res:any, next:any)=>{
         const findRef = await PaymentModel.findOne({reference:req.body.ref})
         if(findRef) return res.status(400).send('Transaction already verified')
 
-        const response = await axios.get(`${config.PAYMENT_API}/transaction/verify/${req.body.ref}`, {
+        const response = await axios.get(`${process.env.PAYMENT_API}/transaction/verify/${req.body.ref}`, {
             headers:{
-                'Authorization':`Bearer ${config.PAYMENT_SECRET_KEY}`
+                'Authorization':`Bearer ${process.env.PAYMENT_SECRET_KEY}`
             }
         })
         if(!response.data.status) return res.status(400).send('could not verify')

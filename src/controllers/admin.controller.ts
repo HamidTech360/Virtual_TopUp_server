@@ -13,12 +13,8 @@ export const createAdmin = async (req:any, res:any, next:any)=>{
     try{
         const findAdmin = await AdminModel.findOne({email:req.body.email})
         if (findAdmin) return res.status(401).send('Email has been taken')
-        
-        
-        
-       
 
-       console.log('Email sent successfully');
+      
         const newAdmin = new AdminModel ({
             firstName:req.body.firstName,
             lastName:req.body.lastName,
@@ -59,12 +55,9 @@ export const AuthAdmin = async (req:any, res:any, next:any)=>{
 
         const checkPwd = await bcrypt.compare(req.body.password, checkAdmin.password)
         if(!checkPwd) return res.status(401).send('Invalid password')
-        
-        
-        
-        const token= jwt.sign({...checkAdmin}, `${config.JWT_SECRET}`)
-     
-        
+ 
+        const token= jwt.sign({...checkAdmin}, `${process.env.JWT_SECRET}`)
+
         res.json({
             status:'success',
             message:'Login successful',
